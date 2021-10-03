@@ -7,7 +7,7 @@ spec:
     storage: 10Gi
   accessModes:
   - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Recycle # Retain, Delete
   storageClassName: local-storage
   local:
     path: /mnt/disk/vol2
