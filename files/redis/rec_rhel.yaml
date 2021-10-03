@@ -1,0 +1,28 @@
+apiVersion: app.redislabs.com/v1
+kind: RedisEnterpriseCluster
+metadata:
+  name: rec
+spec:
+  nodes: 3
+  name: "rec"
+  uiServiceType: ClusterIP
+  servicesRiggerSpec:
+    databaseServiceType: cluster_ip
+  redisEnterpriseNodeResources:
+    limits:
+      cpu: "4000m"
+      memory: 4Gi
+    requests:
+      cpu: "2000m"
+      memory: 4Gi
+  persistentSpec:
+    enabled: true
+    storageClassName: "local-storage"
+    volumeSize: "10Gi"
+  redisEnterpriseImageSpec:
+    repository: registry.connect.redhat.com/redislabs/redis-enterprise
+    versionTag: 6.2.4-55.rhel7-openshift
+  redisEnterpriseServicesRiggerImageSpec:
+    repository: registry.connect.redhat.com/redislabs/services-manager
+  bootstrapperImageSpec:
+    repository: registry.connect.redhat.com/redislabs/redis-enterprise-operator

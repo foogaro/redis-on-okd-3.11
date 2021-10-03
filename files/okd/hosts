@@ -1,0 +1,40 @@
+[OSEv3:children]
+masters
+nodes
+etcd
+
+[OSEv3:vars]
+ansible_ssh_user=root
+
+openshift_deployment_type=origin
+
+openshift_enable_olm=false
+openshift_console_install=true
+openshift_enable_service_catalog=false
+openshift_metrics_install_metrics=false
+openshift_logging_install_logging=false
+openshift_cluster_monitoring_operator_install=false
+
+openshift_cloudprovider_kind=gce
+
+openshift_gcp_project=redisonokd
+openshift_gcp_prefix=redisonokd
+openshift_gcp_multizone=false
+
+openshift_master_default_subdomain='34-65-169-238.nip.io'
+
+openshift_disable_check='disk_availability,memory_availability,docker_storage'
+openshift_docker_options='--selinux-enabled --log-driver=journald --signature-verification=false --insecure-registry=172.30.0.0/16 --exec-opt native.cgroupdriver=systemd'
+openshift_master_identity_providers=[{'name': 'HTPASSWD', 'challenge': 'true', 'login': 'true', 'kind':'HTPasswdPasswordIdentityProvider', 'mappingMethod': 'claim'}]
+
+[masters]
+redisonokd-master
+
+[etcd]
+redisonokd-master
+
+[nodes]
+redisonokd-master openshift_node_group_name='node-config-master-infra'
+redisonokd-node1 openshift_node_group_name='node-config-compute'
+redisonokd-node2 openshift_node_group_name='node-config-compute'
+redisonokd-node3 openshift_node_group_name='node-config-compute'

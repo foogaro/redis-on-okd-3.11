@@ -1,0 +1,23 @@
+#!/bin/bash
+
+yum install -y zip unzip curl vim device-mapper-persistent-data lvm2 epel-release wget git net-tools httpd-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct docker python-ipaddress PyYAML
+
+systemctl start docker
+systemctl enable docker
+
+
+mkdir -p ~/.ssh
+
+cat << 'EOF' > ~/.ssh/authorized_keys
+ssh-rsa AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA= foogaro
+EOF
+
+
+chmod 700 /root/.ssh
+chmod 600 /root/.ssh/authorized_keys
+restorecon -r -vv /root/.ssh/authorized_keys
+
+sed -i "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
+
+systemctl restart sshd.service
+
